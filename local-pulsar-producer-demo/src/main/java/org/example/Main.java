@@ -1,7 +1,9 @@
 package org.example;
 
-import org.example.service.PulsarProducerService;
+import org.example.dto.ProductEvent;
+import org.example.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Main implements CommandLineRunner {
 
     @Autowired
-    private PulsarProducerService pulsarProducerService;
+    @Qualifier("kafkaProducer")
+    private ProducerService producerService;
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -18,6 +21,10 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        pulsarProducerService.sendMessage("{\"productId\":12345,\"productName\":\"Sample Product\"}");
+        String json = "{\"productId\":12345,\"productName\":\"Sample Product\"}";
+
+        ProductEvent productEvent = new ProductEvent(123L, "Rugs");
+
+        producerService.forward(productEvent);
     }
 }

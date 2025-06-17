@@ -1,5 +1,5 @@
 pulsar:
   service-url: pulsar://localhost:6650
-
+  topic-name: persistent://public/default/test-topics
 server:
-  port: 0
+  port: 8082

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
 import org.example.consumer.ProductConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +15,16 @@ import java.io.IOException;
 @Configuration
 @Slf4j
 public class PulsarConfig {
+    private static final String SUBSCRIPTION_NAME = "my-subscription";
 
     @Autowired
     ProductConsumer productConsumer;
+
+    @Value("${pulsar.service-url}")
+    private String pulsarServiceUrl;
+
+    @Value("${pulsar.topic-name}")
+    private String topicName;
 
     @EventListener
     public void onApplicationEvent(final ApplicationReadyEvent event) throws InterruptedException, IOException {
@@ -55,7 +63,7 @@ public class PulsarConfig {
     public PulsarClient pulsarClient() throws PulsarClientException {
         return PulsarClient
             .builder()
-            .serviceUrl("pulsar://localhost:6650")
+            .serviceUrl(pulsarServiceUrl)
             .build();
     }
 
@@ -63,8 +71,8 @@ public class PulsarConfig {
     public Consumer<String> initializeConsumerOne(final PulsarClient pulsarClient) throws PulsarClientException {
         return pulsarClient
             .newConsumer(Schema.STRING)
-            .topic("persistent://public/default/test-topics")
-            .subscriptionName("my-subscription")
+            .topic(topicName)
+            .subscriptionName(SUBSCRIPTION_NAME)
             .subscriptionType(SubscriptionType.Shared)
             .messageListener(productConsumer)
             .consumerName("Consumer 1")
@@ -75,8 +83,8 @@ public class PulsarConfig {
     public Consumer<String> initializeConsumerTwo(final PulsarClient pulsarClient) throws PulsarClientException {
         return pulsarClient
             .newConsumer(Schema.STRING)
-            .topic("persistent://public/default/test-topics")
-            .subscriptionName("my-subscription")
+            .topic(topicName)
+            .subscriptionName(SUBSCRIPTION_NAME)
             .subscriptionType(SubscriptionType.Shared)
             .messageListener(productConsumer)
             .consumerName("Consumer 2")

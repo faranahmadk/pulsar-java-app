@@ -10,9 +10,13 @@ public class Main {
 
     public static void main(String[] args) {
         log.info("Starting Application...");
+
         // inject Vault secrets
+
         final SpringApplication application = new SpringApplication(Main.class);
+
         // add profile from env
+
         application.run(args);
     }
 }

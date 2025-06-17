@@ -15,9 +15,9 @@ public class ProductEventServiceImpl implements ProductEventService {
     public void handleMessage(final ProductEvent productEvent) {
         if (!validProductEvent(productEvent)) {
             log.debug("Invalid message received for ProductEventService. productId: {}, productName: {}", productEvent.productId(), productEvent.productName());
+        } else {
+            log.info("Product Name: {}", productEvent.productName());
         }
-        // do something
-        log.info("Product Name: {}", productEvent.productName());
     }
 
     private boolean validProductEvent(ProductEvent productEvent) {
