@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: pulsar-java-app
+    metrics_path: /admin/prometheus
+    scrape_interval: 5s
+    scrape_timeout: 2s # timeout should always be less than interval
+    honor_labels: true
+    static_configs:
+      - targets: [ "host.docker.internal:8090", "host.docker.internal:9080" ] # scrape urls for both services

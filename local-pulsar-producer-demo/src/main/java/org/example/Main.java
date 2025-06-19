@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Main implements CommandLineRunner {
 
     @Autowired
-    @Qualifier("kafkaProducer")
+    @Qualifier("pulsarProducer")
     private ProducerService producerService;
 
     public static void main(String[] args) {

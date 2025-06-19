@@ -2,4 +2,19 @@ pulsar:
   service-url: pulsar://localhost:6650
   topic-name: persistent://public/default/test-topics
 server:
-  port: 8081
+  port: 8090
+management:
+  endpoints:
+    web:
+      base-path: /admin
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  health:
+    probes:
+      enabled: true
+info:
+  app:
+    name: local-pulsar-consumer-demo

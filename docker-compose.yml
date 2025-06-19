@@ -6,10 +6,11 @@ services:
       - "6650:6650" # Pulsar service port
       - "8080:8080" # Pulsar admin port
     command: bin/pulsar standalone
-    volumes:
-      - pulsar_data:/pulsar/data
-      - pulsar_conf:/pulsar/conf
 
-volumes:
-  pulsar_data:
-  pulsar_conf:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-server
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090" # Prometheus server port
