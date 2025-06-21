@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClientException;
@@ -33,6 +34,15 @@ public class PulsarProducerServiceImpl implements ProducerService {
             }
         } catch (PulsarClientException | JsonProcessingException e) {
             log.error("Error while writing to pulsar topic", e);
+        }
+    }
+
+    @PreDestroy
+    public void cleanUp() {
+        try {
+            pulsarProducer.close();
+        } catch (PulsarClientException e) {
+            e.printStackTrace();
         }
     }
 }
