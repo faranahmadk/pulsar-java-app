@@ -21,14 +21,14 @@ public class PulsarProducerServiceImpl implements ProducerService {
     private Producer<String> pulsarProducer;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper mapper;
 
     @Override
     public void forward(final ProductEvent productEvent) {
         try {
             for (int i = 0; i < 1000; i++) {
                 pulsarProducer.newMessage()
-                    .value(objectMapper.writeValueAsString(productEvent))
+                    .value(mapper.writeValueAsString(productEvent))
                     .send();
                 log.info("msg# {}, msg: {}", i, productEvent);
             }
@@ -40,6 +40,7 @@ public class PulsarProducerServiceImpl implements ProducerService {
     @PreDestroy
     public void cleanUp() {
         try {
+            log.info("Closing producer...");
             pulsarProducer.close();
         } catch (PulsarClientException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package org.example.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Slf4j
 public class PulsarConfig {
 
     @Value("${pulsar.service-url}")
@@ -20,6 +22,7 @@ public class PulsarConfig {
 
     @Bean
     public PulsarClient pulsarClient() throws PulsarClientException {
+        log.info("Connecting to broker...");
         return PulsarClient
             .builder()
             .serviceUrl(pulsarServiceUrl)
@@ -28,6 +31,7 @@ public class PulsarConfig {
 
     @Bean
     public Producer<String> pulsarProducer(final PulsarClient pulsarClient) throws PulsarClientException {
+        log.info("Creating producer...");
         return pulsarClient
             .newProducer(Schema.STRING)
             .topic(topicName)

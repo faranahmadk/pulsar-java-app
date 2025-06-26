@@ -21,10 +21,11 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String json = "{\"productId\":12345,\"productName\":\"Sample Product\"}";
+        final ProductEvent event = ProductEvent.builder()
+            .productId(123L)
+            .productName("Rugs")
+            .build();
 
-        ProductEvent productEvent = new ProductEvent(123L, "Rugs");
-
-        producerService.forward(productEvent);
+        producerService.forward(event);
     }
 }

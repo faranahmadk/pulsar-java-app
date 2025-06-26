@@ -30,8 +30,10 @@
         <dependencies>
             <dependency>
                 <groupId>org.apache.pulsar</groupId>
-                <artifactId>pulsar-client</artifactId>
+                <artifactId>pulsar-bom</artifactId>
                 <version>4.0.1</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
