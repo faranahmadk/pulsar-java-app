@@ -8,6 +8,7 @@ import org.apache.pulsar.client.api.Schema;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 @Slf4j
@@ -30,11 +31,13 @@ public class PulsarConfig {
     }
 
     @Bean
+    @Scope("prototype")
     public Producer<String> pulsarProducer(final PulsarClient pulsarClient) throws PulsarClientException {
         log.info("Creating producer...");
         return pulsarClient
             .newProducer(Schema.STRING)
             .topic(topicName)
+            .producerName("product-event-producer")
             .create();
     }
 }
