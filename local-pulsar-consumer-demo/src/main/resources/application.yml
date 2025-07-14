@@ -2,7 +2,7 @@ pulsar:
   service-url: pulsar://localhost:6650
   topic-name: persistent://public/default/test-topics
 server:
-  port: 8090
+  port: 0
 management:
   endpoints:
     web:
